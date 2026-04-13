@@ -1,5 +1,5 @@
 import numpy as np
-from tensorflow.keras.preprocessing.sequence import pad_sequences
+from keras.preprocessing.sequence import pad_sequences
 import pickle
 
 def save_tokenizer_and_params(tokenizer, max_sequence_len):

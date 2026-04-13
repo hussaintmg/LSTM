@@ -1,8 +1,8 @@
 import streamlit as st
 import numpy as np
-import tensorflow as tf
-from tensorflow.keras.models import load_model
-from tensorflow.keras.preprocessing.sequence import pad_sequences
+import keras
+from keras.models import load_model
+from keras.preprocessing.sequence import pad_sequences
 import pickle
 import warnings
 warnings.filterwarnings('ignore')
