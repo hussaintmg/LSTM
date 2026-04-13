@@ -1,7 +1,7 @@
 import streamlit as st
 import numpy as np
 import keras
-from keras.models import load_model
+from keras.saving import load_model
 from keras.preprocessing.sequence import pad_sequences
 import pickle
 import warnings
