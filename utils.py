@@ -18,10 +18,12 @@ def load_tokenizer_and_params():
     return tokenizer, max_sequence_len
 
 def sample_with_temperature(preds, temperature=1.0):
-    """Apply temperature sampling to predictions"""
+    """Apply temperature sampling to predictions with numerical stability"""
     preds = np.asarray(preds).astype('float64')
-    preds = np.log(preds + 1e-7) / temperature
-    exp_preds = np.exp(preds)
+    # Use a small epsilon and the softmax trick (subtract max) for stability
+    preds = np.log(preds + 1e-10) / temperature
+    exp_preds = np.exp(preds - np.max(preds))
     preds = exp_preds / np.sum(exp_preds)
-    probas = np.random.multinomial(1, preds, 1)
-    return np.argmax(probas)
+    # Re-normalize to ensure the sum is exactly 1.0 for np.random.choice
+    preds = preds / np.sum(preds)
+    return np.random.choice(len(preds), p=preds)

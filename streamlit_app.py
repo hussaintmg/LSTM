@@ -29,6 +29,7 @@ serialization_lib.deserialize_keras_object = patched_deserialize_keras_object
 
 from keras.saving import load_model
 from keras.preprocessing.sequence import pad_sequences
+from utils import sample_with_temperature
 
 # Page configuration
 st.set_page_config(page_title="LSTM Generator", page_icon="📝")
@@ -72,11 +73,7 @@ def main():
                 tokens = pad_sequences([tokens], maxlen=max_sequence_len-1, padding='pre')
                 preds = model.predict(tokens, verbose=0)[0]
                 
-                # Temperature sampling
-                preds = np.log(preds + 1e-7) / temp
-                exp_preds = np.exp(preds)
-                preds = exp_preds / np.sum(exp_preds)
-                idx = np.random.multinomial(1, preds, 1).argmax()
+                idx = sample_with_temperature(preds, temp)
                 
                 word = tokenizer.index_word.get(idx, "")
                 if not word: break
